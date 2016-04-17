@@ -33,7 +33,8 @@ $(function() {
          */
          it('URLs are defined',function(){
             for (var i = allFeeds.length - 1; i >= 0; i--) {
-                expect(allFeeds[i].url.length).not.toBe(0);
+                expect(allFeeds[i].url).toBeDefined();
+                expect(allFeeds[i].url.length).toBeGreaterThan(0);
             }     
          });
 
@@ -43,7 +44,8 @@ $(function() {
          */
          it('names are defined',function(){
             allFeeds.forEach(function(value){
-                expect(value.name.length).not.toBe(0);
+                expect(value.name).toBeDefined();
+                expect(value.name.length).toBeGreaterThan(0);
             });    
          });
 
@@ -69,9 +71,9 @@ $(function() {
           it('chages visibility correctly',function(){
             var menuIcon = $('.menu-icon-link');
             menuIcon.trigger("click");
-            expect($("body").hasClass("menu-hidden")).toBe(false);
+            expect($("body").hasClass("menu-hidden")).toBeFalsy();
             menuIcon.trigger("click");
-            expect($("body").hasClass("menu-hidden")).toBe(true);
+            expect($("body").hasClass("menu-hidden")).toBeTruthy();
           });
     });
         
@@ -88,7 +90,7 @@ $(function() {
         });
 
         it("load correctly",function(){
-            expect($(".feed .entry").length > 0).toBe(true);
+            expect($(".feed .entry").length).toBeGreaterThan(0);
         });
     });
     
@@ -110,7 +112,7 @@ $(function() {
                 newContent = $(".feed").text();
                 expect(oldContent).not.toEqual(newContent);  
                 done();
-            },10000);
+            });
             
         });
     });    
