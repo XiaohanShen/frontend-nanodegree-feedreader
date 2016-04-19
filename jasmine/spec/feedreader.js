@@ -100,20 +100,45 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
-         beforeEach(function(done){
-            var oldContent, newContent;
-            loadFeed(0,done);
-         });
+        // way 1
 
-         it("is loaded by the loadFeed function.",function(done){
-            oldContent = $(".feed").text();
+        //  beforeEach(function(done){
+        //     var oldContent, newContent;
+        //     loadFeed(0,done);
+        //  });
 
-            loadFeed(3,function(){
-                newContent = $(".feed").text();
-                expect(oldContent).not.toEqual(newContent);  
-                done();
-            });
+        //  it("is loaded by the loadFeed function.",function(done){
+        //     oldContent = $(".feed").text();
+
+        //     loadFeed(3,function(){
+        //         newContent = $(".feed").text();
+        //         expect(oldContent).not.toEqual(newContent);  
+        //         done();
+        //     });
             
+        // });
+
+        // way 2 use promise
+
+        it("is loaded by the loadFeed function",function(done){
+            function getContent(num){
+                return new Promise(function(resolve, reject){
+                    loadFeed(num, (function(){
+                        var ret = $(".feed").text();
+                        resolve(ret);
+                    }));
+                });
+            };
+           
+           getContent(0).then(function(oldContent){
+                loadFeed(3, (function(){
+                    var ret = $(".feed").text();
+                    expect(ret).not.toEqual(oldContent);  
+                    done();
+                }));
+           })
+
         });
+
     });    
 }());
